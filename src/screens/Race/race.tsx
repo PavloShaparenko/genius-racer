@@ -1,0 +1,258 @@
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import './race.css';
+
+// Импортируем картинки машины и фона
+import carDrive from "../../assets/car-drive.gif";
+import carCrash from "../../assets/car-crash.gif";
+import bgImage from "../../assets/back-1.png"; 
+
+// Импортируем картинки препятствий
+import holeImg from "../../assets/hole.png";
+import snakeImg from "../../assets/snake.png";
+import gangsterImg from "../../assets/gangster.png";
+import zombieImg from "../../assets/zombie.png";
+import stoneImg from "../../assets/stone.png";
+
+// ==========================================
+// ИМПОРТ ЗВУКОВ (Убедись, что файлы существуют!)
+// ==========================================
+import engineSfx from "../../assets/sounds/engine.mp3";
+import warningSfx from "../../assets/sounds/warning.mp3";
+import correctSfx from "../../assets/sounds/correct.mp3";
+import coinSfx from "../../assets/sounds/coin.mp3";
+import crashSfx from "../../assets/sounds/crash.mp3";
+import sadSfx from "../../assets/sounds/sad.mp3";
+import victorySfx from "../../assets/sounds/victory.mp3";
+import clickSfx from "../../assets/sounds/click.mp3";
+import backMusicSfx from "../../assets/sounds/back-music.mp3";
+
+// Функция для проигрывания одиночных звуков (чтобы они могли накладываться друг на друга)
+const playSound = (src: string, volume = 1) => {
+  const audio = new Audio(src);
+  audio.volume = volume;
+  audio.play().catch(() => {}); // catch нужен, чтобы браузер не ругался, если звук заблокирован до первого клика
+};
+
+interface RaceProps {
+  carEmoji: string;
+  level: number;
+  onFinish: (coins: number) => void;
+}
+
+interface Question {
+  text: string;
+  answer: number;
+  options: number[];
+  obstacleImg: string;
+}
+
+const generateQuestions = (base: number): Question[] => {
+  const obstacles = [holeImg, snakeImg, gangsterImg, zombieImg, stoneImg];
+  const questions: Question[] = [];
+
+  const createQ = (multiplier: number) => {
+    const answer = base * multiplier;
+    const fakes = new Set([answer]);
+    while (fakes.size < 4) {
+      const fakeMult = multiplier + (Math.floor(Math.random() * 5) - 2);
+      const fakeAns = base * (fakeMult > 0 ? fakeMult : 1) + (Math.floor(Math.random() * 3));
+      if (fakeAns !== answer && fakeAns > 0) fakes.add(fakeAns);
+    }
+    
+    return {
+      text: `${base} × ${multiplier}`,
+      answer,
+      options: Array.from(fakes).sort(() => Math.random() - 0.5),
+      obstacleImg: obstacles[Math.floor(Math.random() * obstacles.length)]
+    };
+  };
+
+  for (let i = 1; i <= 10; i++) questions.push(createQ(i));
+  for (let i = 0; i < 3; i++) questions.push(createQ(Math.floor(Math.random() * 10) + 1));
+
+  return questions;
+};
+
+export default function Race({ carEmoji, level, onFinish }: RaceProps) {
+  const [status, setStatus] = useState<'driving' | 'question' | 'crashed' | 'victory'>('driving');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [earnedCoins, setEarnedCoins] = useState(0);
+  const [carPosition, setCarPosition] = useState({ left: 18, bottom: 22 });
+  const [obstacleLeft, setObstacleLeft] = useState(115);
+  const [obstacleTarget, setObstacleTarget] = useState(34);
+  const [showObstacle, setShowObstacle] = useState(false);
+
+  const questions = useMemo(() => generateQuestions(level), [level]);
+  const currentQ = questions[currentIndex];
+
+  // ==========================================
+  // ЛОГИКА ЗВУКА МОТОРА И ФОНА
+  // ==========================================
+  const engineAudioRef = useRef(new Audio(engineSfx));
+  const backgroundMusicRef = useRef(new Audio(backMusicSfx));
+
+  useEffect(() => {
+    const engine = engineAudioRef.current;
+    const backgroundMusic = backgroundMusicRef.current;
+
+    engine.loop = true;
+    engine.volume = 0.5;
+
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = 0.65;
+
+    if (status === 'driving' || status === 'question' || status === 'victory') {
+      engine.play().catch(() => {});
+      backgroundMusic.play().catch(() => {});
+    } else {
+      engine.pause();
+      backgroundMusic.pause();
+    }
+
+    return () => {
+      engine.pause();
+      backgroundMusic.pause();
+    };
+  }, [status]);
+
+  // ==========================================
+  // ТАЙМЕРЫ И ДВИЖЕНИЕ
+  // ==========================================
+  useEffect(() => {
+    if (status === 'driving') {
+      const driveTime = Math.random() * 500 + 2500;
+      const timer = setTimeout(() => {
+        setStatus('question');
+      }, driveTime);
+      return () => clearTimeout(timer);
+    }
+  }, [status, currentIndex]);
+
+  useEffect(() => {
+    if (status !== 'driving') return;
+    const interval = window.setInterval(() => {
+      setCarPosition(prev => {
+        const nextLeft = Math.min(18, prev.left + 1.2);
+        return { left: nextLeft, bottom: prev.bottom };
+      });
+    }, 180);
+    return () => window.clearInterval(interval);
+  }, [status, currentIndex]);
+
+  useEffect(() => {
+    if (status === 'question') {
+      playSound(warningSfx, 0.25); // Звук: Появился вопрос (⚠️ Beep)
+      
+      setCarPosition({ left: 24, bottom: 18 });
+      setShowObstacle(true);
+      setObstacleLeft(56);
+      requestAnimationFrame(() => {
+        setObstacleLeft(54);
+      });
+    }
+
+    if (status === 'driving') {
+      setCarPosition({ left: 12, bottom: 18 });
+      setShowObstacle(false);
+      setObstacleLeft(110);
+      setObstacleTarget(34);
+    }
+  }, [status, currentIndex]);
+
+  // ==========================================
+  // ОБРАБОТКА ОТВЕТА (И ЗВУКИ)
+  // ==========================================
+  const handleAnswer = (selected: number) => {
+    playSound(clickSfx); // Звук: Клик по кнопке
+
+    if (selected === currentQ.answer) {
+      // ПРАВИЛЬНО
+      playSound(correctSfx); // Звук: Правильный ответ
+      setTimeout(() => playSound(coinSfx), 200); // Звук: Монетка (с небольшой задержкой для красоты)
+
+      setEarnedCoins(c => c + 10);
+      if (currentIndex + 1 >= questions.length) {
+        setStatus('victory');
+        playSound(victorySfx); // Звук: Победа 🎉
+        setTimeout(() => onFinish(earnedCoins + Math.random() * 20 + 50), 3000);
+      } else {
+        setCurrentIndex(i => i + 1);
+        setStatus('driving');
+      }
+    } else {
+      // НЕПРАВИЛЬНО
+      setStatus('crashed');
+      playSound(crashSfx); // Звук: Авария 💥
+      setTimeout(() => playSound(sadSfx), 800); // Звук: Грустная мелодия (начинается после звука удара)
+      
+      setTimeout(() => onFinish(earnedCoins), 2500); 
+    }
+  };
+
+  return (
+    <div className={`race-screen ${status !== 'driving' ? 'paused' : ''}`}>
+      
+      <div className="bg-wrapper">
+        <img src={bgImage} className="bg-img" alt="background" draggable="false" />
+        <img src={bgImage} className="bg-img" alt="background" draggable="false" />
+      </div>
+
+      <div className="race-ui">
+        <div className="score-board">
+          💰 {earnedCoins} | Рівень: ×{level} | Питання: {currentIndex + 1}/13
+        </div>
+      </div>
+
+      <div
+        className={`player-car ${status === 'crashed' ? 'crashed-anim' : ''}`}
+        style={{ left: `${carPosition.left}%`, bottom: `${carPosition.bottom}%`, transition: 'left 0.45s ease-out, bottom 0.45s ease-out' }}
+      >
+        {status === 'crashed' ? (
+          <span className="player-car-image crash-emoji"><img src={carCrash} alt="Car" className="player-car-image" draggable="false" /></span>
+        ) : (
+          <img src={carDrive} alt="Car" className="player-car-image" draggable="false" />
+        )}
+      </div>
+
+      {showObstacle && status === 'question' && (
+        <div
+          className="obstacle"
+          style={{
+            left: `${obstacleLeft}%`,
+            bottom: `${carPosition.bottom + 1}%`,
+            transition: 'left 2.2s ease-out',
+            zIndex: 16,
+            transform: `translateX(0)`,
+          }}
+        >
+          <img src={currentQ.obstacleImg} alt="obstacle" className="obstacle-img" draggable="false" />
+        </div>
+      )}
+
+      {status === 'question' && (
+        <div className="question-modal">
+          <h2>Обережно! Перешкода!</h2>
+          <div className="math-problem">{currentQ.text} = ?</div>
+          
+          <div className="answers-grid">
+            {currentQ.options.map((opt, i) => (
+              <button 
+                key={i} 
+                className="answer-btn"
+                onClick={() => handleAnswer(opt)}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {status === 'victory' && (
+        <div className="victory-message">
+          ТИ ПРОЙШОВ РІВЕНЬ! 🎉
+        </div>
+      )}
+    </div>
+  );
+}

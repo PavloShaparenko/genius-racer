@@ -1,0 +1,99 @@
+import React, { useState } from 'react';
+import './index.css';
+import Race from './screens/Race/race';
+import Explanation from './screens/Explanation/Explanation';
+
+type Screen = 'lobby' | 'garage' | 'race' | 'explanation';
+
+export default function App() {
+  const [currentScreen, setCurrentScreen] = useState<Screen>('lobby');
+  const [coins, setCoins] = useState<number>(0);
+  const [selectedLevel, setSelectedLevel] = useState<number>(1);
+  const levelOptions = Array.from({ length: 9 }, (_, index) => index + 1);
+
+  return (
+    <div className="game-container">
+      {currentScreen === 'lobby' && (
+        <div style={{ padding: 20, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <h1>Головне меню</h1>
+          <h2 style={{ color: '#ffd700', margin: '20px 0' }}>💰 {coins}</h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, maxWidth: 320, margin: '20px auto' }}>
+            {levelOptions.map((level) => (
+              <button
+                key={level}
+                onClick={() => setSelectedLevel(level)}
+                style={{
+                  padding: '12px',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  background: selectedLevel === level ? '#ffd700' : '#2196F3',
+                  color: selectedLevel === level ? '#000' : 'white',
+                  border: 'none',
+                  borderRadius: 10,
+                  cursor: 'pointer'
+                }}
+              >
+                ×{level}
+              </button>
+            ))}
+          </div>
+
+          <p style={{ marginBottom: 16, fontSize: '18px' }}>
+            Обрано: таблиця множення на {selectedLevel}
+          </p>
+
+          <button
+            onClick={() => setCurrentScreen('explanation')}
+            style={{ padding: '15px', fontSize: '18px', background: '#FF9800', color: 'white', border: 'none', borderRadius: 10, cursor: 'pointer', marginBottom: 12 }}
+          >
+            📘 Що таке множення?
+          </button>
+
+          <button
+            onClick={() => setCurrentScreen('race')}
+            style={{ padding: '20px', fontSize: '24px', fontWeight: 'bold', background: '#4CAF50', color: 'white', border: 'none', borderRadius: 15, cursor: 'pointer', marginBottom: 20, boxShadow: '0 6px 0 #2E7D32' }}
+          >
+            🚀 ГРАТИ
+          </button>
+
+          <button
+            onClick={() => setCurrentScreen('garage')}
+            style={{ padding: '15px', fontSize: '18px', background: '#2196F3', color: 'white', border: 'none', borderRadius: 10, cursor: 'pointer' }}
+          >
+            🔧 Гараж
+          </button>
+        </div>
+      )}
+
+      {currentScreen === 'garage' && (
+        <div style={{ padding: 20 }}>
+          <h1>Гараж</h1>
+          <h2 style={{ color: '#ffd700' }}>💰 {coins}</h2>
+          <br />
+          <button onClick={() => setCurrentScreen('lobby')} style={{ padding: '10px', fontSize: '16px' }}>
+            ⬅ Назад
+          </button>
+        </div>
+      )}
+
+      {currentScreen === 'explanation' && (
+        <Explanation
+          onBack={() => setCurrentScreen('lobby')}
+          onPlay={() => setCurrentScreen('race')}
+        />
+      )}
+
+      {currentScreen === 'race' && (
+        <Race
+          level={selectedLevel}
+          onFinish={(earnedCoins) => {
+            setCoins((c) => c + earnedCoins);
+            setCurrentScreen('lobby');
+          }}
+          carEmoji={''}
+        />
+      )}
+    </div>
+  );
+}
