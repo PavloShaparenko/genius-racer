@@ -1,12 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || 'genius-racer';
+const publicPath = process.env.PUBLIC_URL || `/${repoName}/`;
+
 module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[contenthash].js',
-    publicPath: './',
+    publicPath,
     clean: true
   },
   resolve: {
