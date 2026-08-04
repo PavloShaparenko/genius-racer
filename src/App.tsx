@@ -1,24 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import Race from './screens/Race/race';
 import Explanation from './screens/Explanation/Explanation';
+import Garage, { CarDef } from './screens/Garage/Garage'; // Перевір, чи правильний шлях до файлу Garage.tsx
 
+// Імпорт картинок машин
+import carBasicImg from "./assets/car-drive.gif"; 
+import carSportImg from "./assets/car-sport.gif"; 
+import carTankImg from "./assets/car-tank.gif";
+
+
+// ИМПОРТ ГИФОК АВАРИЙ (Укажи свои правильные названия файлов!)
+import carBasicCrash from "./assets/car-basic-crash.gif"; 
+import carSportCrash from "./assets/car-sport-crash.gif"; 
+import carTankCrash from "./assets/car-tank-crash.gif";
+
+// Обновляем базу данных
+const CARS_DB: CarDef[] = [
+  { id: 'basic', name: 'Базова', price: 0, image: carBasicImg, crashImage: carBasicCrash },
+  { id: 'sport', name: 'Спортивна', price: 150, image: carSportImg, crashImage: carSportCrash },
+  { id: 'tank', name: 'Танк', price: 500, image: carTankImg, crashImage: carTankCrash },
+];
 type Screen = 'lobby' | 'garage' | 'race' | 'explanation';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('lobby');
-  const [coins, setCoins] = useState<number>(0);
+  
+  // Вибір рівня
   const [selectedLevel, setSelectedLevel] = useState<number>(1);
   const levelOptions = Array.from({ length: 9 }, (_, index) => index + 1);
 
+  // ==========================================
+  // ДАНІ ГРАВЦЯ (Зчитуємо з localStorage)
+  // ==========================================
+  const [coins, setCoins] = useState<number>(() => {
+    return Number(localStorage.getItem('tima_coins')) || 0;
+  });
+
+  const [unlockedCars, setUnlockedCars] = useState<string[]>(() => {
+    const saved = localStorage.getItem('tima_cars');
+    return saved ? JSON.parse(saved) : ['basic'];
+  });
+
+  const [selectedCarId, setSelectedCarId] = useState<string>(() => {
+    return localStorage.getItem('tima_selected_car') || 'basic';
+  });
+
+  // ==========================================
+  // ЗБЕРЕЖЕННЯ (Коли дані змінюються, пишемо в localStorage)
+  // ==========================================
+  useEffect(() => {
+    localStorage.setItem('tima_coins', coins.toString());
+    localStorage.setItem('tima_cars', JSON.stringify(unlockedCars));
+    localStorage.setItem('tima_selected_car', selectedCarId);
+  }, [coins, unlockedCars, selectedCarId]);
+
+  // ==========================================
+  // ЛОГІКА ГАРАЖА
+  // ==========================================
+  const handleBuyCar = (id: string, price: number) => {
+    setCoins(prev => prev - price);
+    setUnlockedCars(prev => [...prev, id]);
+    setSelectedCarId(id); // Одразу сідаємо в куплену машину
+  };
+
+  // Знаходимо поточну машину та картинку для відображення в меню та гонці
+  const currentCar = CARS_DB.find(c => c.id === selectedCarId) || CARS_DB[0];
+  const currentCarImage = currentCar.image;
+
   return (
     <div className="game-container">
+      
+      {/* ГОЛОВНЕ МЕНЮ */}
       {currentScreen === 'lobby' && (
         <div style={{ padding: 20, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <h1>Головне меню</h1>
           <h2 style={{ color: '#ffd700', margin: '20px 0' }}>💰 {coins}</h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, maxWidth: 320, margin: '20px auto' }}>
+          {/* Показуємо поточну машину в меню */}
+          <img src={currentCarImage} alt="Current Car" style={{ width: '120px', margin: '0 auto 20px', transform: 'scaleX(-1)' }} />
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, maxWidth: 320, margin: '0 auto 20px' }}>
             {levelOptions.map((level) => (
               <button
                 key={level}
@@ -66,17 +128,20 @@ export default function App() {
         </div>
       )}
 
+      {/* ГАРАЖ */}
       {currentScreen === 'garage' && (
-        <div style={{ padding: 20 }}>
-          <h1>Гараж</h1>
-          <h2 style={{ color: '#ffd700' }}>💰 {coins}</h2>
-          <br />
-          <button onClick={() => setCurrentScreen('lobby')} style={{ padding: '10px', fontSize: '16px' }}>
-            ⬅ Назад
-          </button>
-        </div>
+        <Garage 
+          cars={CARS_DB}
+          coins={coins}
+          unlockedCars={unlockedCars}
+          selectedCarId={selectedCarId}
+          onSelectCar={setSelectedCarId}
+          onBuyCar={handleBuyCar}
+          onBack={() => setCurrentScreen('lobby')}
+        />
       )}
 
+      {/* ПОЯСНЕННЯ */}
       {currentScreen === 'explanation' && (
         <Explanation
           onBack={() => setCurrentScreen('lobby')}
@@ -84,14 +149,16 @@ export default function App() {
         />
       )}
 
+      {/* ГОНКА */}
       {currentScreen === 'race' && (
         <Race
           level={selectedLevel}
+          carCrashImage={currentCar.crashImage} // Передаємо вибраний рівень у гонку!
+          carImage={currentCarImage} // Передаємо картинку вибраної машини
           onFinish={(earnedCoins) => {
             setCoins((c) => c + earnedCoins);
             setCurrentScreen('lobby');
           }}
-          carEmoji={''}
         />
       )}
     </div>

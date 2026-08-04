@@ -1,4 +1,5 @@
 import React from 'react';
+import './Explanation.css';
 
 interface ExplanationProps {
   onBack: () => void;
@@ -7,47 +8,63 @@ interface ExplanationProps {
 
 export default function Explanation({ onBack, onPlay }: ExplanationProps) {
   return (
-    <div style={{ padding: 24, maxWidth: 760, margin: '0 auto', color: '#fff', lineHeight: 1.6 }}>
-      <h1 style={{ marginBottom: 12, fontSize: 32 }}>📘 Що таке множення?</h1>
-      <p style={{ fontSize: 18, marginBottom: 16 }}>
-        Множення — це швидкий спосіб додавати однакові числа кілька разів.
+    <div className="explanation-container">
+      <h1 className="explanation-title">🦸‍♂️ Множення — це суперсила!</h1>
+      
+      <p className="explanation-intro">
+        Привіт! Ти вже вмієш додавати числа. А множення — це секретний спосіб рахувати <strong>набагато швидше</strong>!
       </p>
 
-      <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 16, padding: 20, marginBottom: 20 }}>
-        <h2 style={{ marginBottom: 8 }}>Наприклад:</h2>
-        <p style={{ fontSize: 20, margin: '8px 0' }}>
-          3 × 4 означає: <strong>3 рази по 4</strong>
+      <div className="card card-magic">
+        <h2 className="card-title">✨ Головний секрет</h2>
+        <p className="example-text">
+          Знак множення <strong>« × »</strong> насправді означає маленьке слово <span className="highlight">«ПО»</span>.
         </p>
-        <p style={{ fontSize: 20, margin: '8px 0' }}>
-          4 + 4 + 4 = 12
-        </p>
-        <p style={{ fontSize: 20, margin: '8px 0' }}>
-          Тому <strong>3 × 4 = 12</strong>
+        <p className="example-text">
+          Коли ти бачиш <strong>3 × 2</strong>, це означає: взяти <strong>3</strong> рази <strong>ПО 2</strong>.
         </p>
       </div>
 
-      <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 16, padding: 20, marginBottom: 24 }}>
-        <h3 style={{ marginBottom: 8 }}>Як це працює:</h3>
-        <ul style={{ margin: 0, paddingLeft: 20, fontSize: 17 }}>
-          <li>Перший номер — скільки разів повторюємо.</li>
-          <li>Другий номер — яке число повторюємо.</li>
-          <li>Результат — загальна сума.</li>
-        </ul>
+      <div className="card card-example">
+        <h2 className="card-title">🏎️ Давай порахуємо машинки!</h2>
+        <p className="example-text">
+          Уяви, що у тебе є 3 гаражі. У кожному стоїть ПО 2 машинки.
+        </p>
+        
+        <div className="emoji-row">
+          (🚗🚗) + (🚗🚗) + (🚗🚗)
+        </div>
+
+        <p className="example-text">
+          Ти можеш додавати довго: <strong>2 + 2 + 2 = 6</strong>
+        </p>
+        <p className="example-text">
+          Або використати суперсилу множення: <br/>
+          <strong>3</strong> (гаражі) <strong>× 2</strong> (машинки) <strong>= 6</strong>
+        </p>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <button
-          onClick={onBack}
-          style={{ padding: '12px 18px', fontSize: 16, border: 'none', borderRadius: 10, cursor: 'pointer', background: '#2196F3', color: '#fff' }}
-        >
-          ⬅ Назад в меню
+      <div className="card">
+        <h2 className="card-title">🍬 Ще один приклад</h2>
+        <p className="example-text">
+          Мама дала тобі 4 пакетики. В кожному лежить ПО 3 цукерки.
+        </p>
+        <div className="emoji-row">
+          🍬🍬🍬 | 🍬🍬🍬 | 🍬🍬🍬 | 🍬🍬🍬
+        </div>
+        <p className="example-text">
+          Просто кажемо: <strong>4 рази ПО 3</strong>. <br/>
+          Записуємо: <strong>4 × 3 = 12</strong> цукерок!
+        </p>
+      </div>
+
+      <div className="buttons-container">
+        <button onClick={onBack} className="btn btn-back">
+          ⬅ Назад
         </button>
 
-        <button
-          onClick={onPlay}
-          style={{ padding: '12px 18px', fontSize: 16, border: 'none', borderRadius: 10, cursor: 'pointer', background: '#4CAF50', color: '#fff' }}
-        >
-          🚀 Почати гру
+        <button onClick={onPlay} className="btn btn-play">
+          🚀 Я зрозумів! Грати!
         </button>
       </div>
     </div>

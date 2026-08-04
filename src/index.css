@@ -9,7 +9,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #1a1a2e; /* Темно-синий "игровой" фон */
   color: white;
-  overflow: hidden; /* Запрещаем скролл страницы, это же игра */
+  overflow-x: hidden; /* Не даем странице уходить по горизонтали */
   width: 100vw;
   height: 100vh;
 }
@@ -30,6 +30,7 @@ body {
   max-height: 800px;
   background-color: #16213e;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }

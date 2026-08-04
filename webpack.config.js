@@ -2,7 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || 'genius-racer';
-const publicPath = process.env.PUBLIC_URL || `/${repoName}/`;
+const isProd = process.env.NODE_ENV === 'production';
+// For local development we need a root path (/), but for GitHub Pages deployment
+// we should use a subfolder path such as /genius-racer/.
+// You can override it later with PUBLIC_URL when you are ready to deploy.
+const publicPath = process.env.PUBLIC_URL || (isProd ? `/${repoName}/` : '/');
 
 module.exports = {
   entry: './src/index.tsx',

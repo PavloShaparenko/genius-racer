@@ -1,0 +1,104 @@
+.explanation-container {
+  padding: 24px;
+  max-width: 760px;
+  margin: 0 auto;
+  color: #fff;
+  line-height: 1.6;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; /* Робимо шрифт більш дитячим, якщо підтримується */
+}
+
+.explanation-title {
+  margin-bottom: 16px;
+  font-size: 32px;
+  text-align: center;
+  color: #FFD700; /* Золотий колір для заголовка */
+}
+
+.explanation-intro {
+  font-size: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+} 
+
+/* Спільні стилі для карток */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-magic {
+  background: rgba(156, 39, 176, 0.2); /* Фіолетовий магічний фон */
+  border: 2px dashed #E040FB;
+}
+
+.card-example {
+  background: rgba(33, 150, 243, 0.15); /* Синій фон для машинок */
+}
+
+.card-title {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.example-text {
+  font-size: 20px;
+  margin: 8px 0;
+}
+
+.highlight {
+  color: #64FFDA;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.emoji-row {
+  font-size: 32px;
+  margin: 12px 0;
+  letter-spacing: 4px;
+}
+
+/* Стилі кнопок */
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.btn {
+  padding: 14px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-back {
+  background: #607D8B;
+}
+
+.btn-back:hover {
+  background: #546E7A;
+}
+
+.btn-play {
+  background: #FF9800; /* Яскрава ігрова кнопка */
+  box-shadow: 0 4px 0 #F57C00;
+}
+
+.btn-play:hover {
+  background: #FFA726;
+  transform: translateY(-2px);
+}

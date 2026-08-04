@@ -3,7 +3,7 @@ import './race.css';
 
 // Импортируем картинки машины и фона
 import carDrive from "../../assets/car-drive.gif";
-import carCrash from "../../assets/car-crash.gif";
+
 import bgImage from "../../assets/back-1.png"; 
 
 // Импортируем картинки препятствий
@@ -34,7 +34,8 @@ const playSound = (src: string, volume = 1) => {
 };
 
 interface RaceProps {
-  carEmoji: string;
+  carImage: string;
+  carCrashImage: string;
   level: number;
   onFinish: (coins: number) => void;
 }
@@ -73,7 +74,7 @@ const generateQuestions = (base: number): Question[] => {
   return questions;
 };
 
-export default function Race({ carEmoji, level, onFinish }: RaceProps) {
+export default function Race({ carImage, carCrashImage, level, onFinish }: RaceProps) {
   const [status, setStatus] = useState<'driving' | 'question' | 'crashed' | 'victory'>('driving');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [earnedCoins, setEarnedCoins] = useState(0);
@@ -120,7 +121,7 @@ export default function Race({ carEmoji, level, onFinish }: RaceProps) {
   // ==========================================
   useEffect(() => {
     if (status === 'driving') {
-      const driveTime = Math.random() * 500 + 2500;
+      const driveTime = Math.random() * 400 + 1100;
       const timer = setTimeout(() => {
         setStatus('question');
       }, driveTime);
@@ -143,7 +144,7 @@ export default function Race({ carEmoji, level, onFinish }: RaceProps) {
     if (status === 'question') {
       playSound(warningSfx, 0.25); // Звук: Появился вопрос (⚠️ Beep)
       
-      setCarPosition({ left: 24, bottom: 18 });
+      setCarPosition({ left: 14, bottom: 18 });
       setShowObstacle(true);
       setObstacleLeft(56);
       requestAnimationFrame(() => {
@@ -208,9 +209,9 @@ export default function Race({ carEmoji, level, onFinish }: RaceProps) {
         style={{ left: `${carPosition.left}%`, bottom: `${carPosition.bottom}%`, transition: 'left 0.45s ease-out, bottom 0.45s ease-out' }}
       >
         {status === 'crashed' ? (
-          <span className="player-car-image crash-emoji"><img src={carCrash} alt="Car" className="player-car-image" draggable="false" /></span>
+          <span className="player-car-image crash-emoji"><img src={carCrashImage} alt="Car" className="player-car-image" draggable="false" /></span>
         ) : (
-          <img src={carDrive} alt="Car" className="player-car-image" draggable="false" />
+          <img src={carImage} alt="Car" className="player-car-image" draggable="false" />
         )}
       </div>
 

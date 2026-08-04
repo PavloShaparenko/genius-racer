@@ -21,7 +21,7 @@
   display: flex; /* Выстраивает две картинки в один длинный ряд */
   z-index: 0;
   /* Скорость прокрутки фона. Чем меньше секунд, тем быстрее едем */
-  animation: scrollBg 15s linear infinite; 
+  animation: scrollBg 35s linear infinite; 
 }
 
 .bg-img {
@@ -57,7 +57,7 @@
 
 .player-car-image {
   display: block;
-  width: 150px;
+  width: 175px;
   max-width: 42vw;
   height: auto;
   pointer-events: none;
@@ -100,7 +100,7 @@
 /* НОВЫЙ КЛАСС ДЛЯ КАРТИНОК ПРЕПЯТСТВИЙ */
 .obstacle-img {
   display: block;
-  width: 120px; /* Ширина препятствия (подстрой под размер машины) */
+  width: 90px; /* Ширина препятствия (подстрой под размер машины) */
   height: auto;
   max-height: 150px; /* Чтобы высокие картинки (как зомби) не были слишком огромными */
   object-fit: contain; /* Сохраняет пропорции картинки */
