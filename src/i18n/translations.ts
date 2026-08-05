@@ -2,14 +2,12 @@ export type Language = 'uk' | 'en' | 'pl';
 
 export const translations = {
   uk: {
-    // App (Меню)
     menuTitle: "Головне меню",
     selectedTable: "Обрано: таблиця множення на",
     explanationBtn: "📘 Що таке множення?",
     playBtn: "🚀 ГРАТИ",
     garageBtn: "🔧 Гараж",
     
-    // Garage
     garageTitle: "ГАРАЖ",
     backBtn: "⬅ Назад",
     price: "Ціна:",
@@ -18,13 +16,11 @@ export const translations = {
     buyBtn: "Купити",
     notEnoughCoins: "Не вистачає, треба ще :",
 
-    // Race
     level: "Рівень",
     question: "Питання",
     obstacle: "Обережно! Перешкода!",
     victory: "ТИ ПРОЙШОВ РІВЕНЬ! 🎉",
 
-    // Explanation
     explTitle: "🦸‍♂️ Множення — це суперсила!",
     explIntro: "Привіт! Ти вже вмієш додавати числа. А множення — це секретний спосіб рахувати набагато швидше!",
     explSecretTitle: "✨ Головний секрет",
@@ -38,16 +34,17 @@ export const translations = {
     explCandyText1: "Мама дала тобі 4 пакетики. В кожному лежить ПО 3 цукерки.",
     explCandyText2: "Просто кажемо: 4 рази ПО 3. Записуємо: 4 × 3 = 12 цукерок!",
     explPlayBtn: "🚀 Я зрозумів! Грати!",
+    carBasicName: "Базова",
+    carSportName: "Спортивна",
+    carTankName: "Танк",
   },
   en: {
-    // App (Menu)
     menuTitle: "Main Menu",
     selectedTable: "Selected: multiplication table of",
     explanationBtn: "📘 What is multiplication?",
     playBtn: "🚀 PLAY",
     garageBtn: "🔧 Garage",
     
-    // Garage
     garageTitle: "GARAGE",
     backBtn: "⬅ Back",
     price: "Price:",
@@ -56,13 +53,11 @@ export const translations = {
     buyBtn: "Buy",
     notEnoughCoins: "Not enough, you need:",
 
-    // Race
     level: "Level",
     question: "Question",
     obstacle: "Watch out! Obstacle!",
     victory: "LEVEL COMPLETED! 🎉",
 
-    // Explanation
     explTitle: "🦸‍♂️ Multiplication is a superpower!",
     explIntro: "Hi! You already know how to add numbers. Multiplication is a secret way to count much faster!",
     explSecretTitle: "✨ The Main Secret",
@@ -76,16 +71,17 @@ export const translations = {
     explCandyText1: "Mom gave you 4 bags. Each has 3 candies.",
     explCandyText2: "We just say: 4 groups of 3. We write: 4 × 3 = 12 candies!",
     explPlayBtn: "🚀 I got it! Play!",
+    carBasicName: "Basic",
+    carSportName: "Sport",
+    carTankName: "Tank",
   },
   pl: {
-    // App (Menu)
     menuTitle: "Menu Główne",
     selectedTable: "Wybrano: tabliczka mnożenia przez",
     explanationBtn: "📘 Co to jest mnożenie?",
     playBtn: "🚀 GRAJ",
     garageBtn: "🔧 Garaż",
     
-    // Garage
     garageTitle: "GARAŻ",
     backBtn: "⬅ Wróć",
     price: "Cena:",
@@ -94,13 +90,11 @@ export const translations = {
     buyBtn: "Kup",
     notEnoughCoins: "Za mało, potrzebujesz jeszcze:",
 
-    // Race
     level: "Poziom",
     question: "Pytanie",
     obstacle: "Uwaga! Przeszkoda!",
     victory: "POZIOM ZALICZONY! 🎉",
 
-    // Explanation
     explTitle: "🦸‍♂️ Mnożenie to supermoc!",
     explIntro: "Cześć! Umiesz już dodawać liczby. Mnożenie to tajny sposób, by liczyć znacznie szybciej!",
     explSecretTitle: "✨ Główny sekret",
@@ -114,5 +108,8 @@ export const translations = {
     explCandyText1: "Mama dała ci 4 torebki. W każdej są PO 3 cukierki.",
     explCandyText2: "Mówimy po prostu: 4 razy PO 3. Zapisujemy: 4 × 3 = 12 cukierków!",
     explPlayBtn: "🚀 Rozumiem! Graj!",
+    carBasicName: "Podstawowa",
+    carSportName: "Sportowa",
+    carTankName: "Czołg",
   }
 };
