@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import './race.css';
-import { useLanguage } from '../../i18n/LanguageContext'; // <--- ІМПОРТ
+import { useLanguage } from '../../i18n/LanguageContext';
 
 import holeImg from "../../assets/hole.png";
 import snakeImg from "../../assets/snake.png";
@@ -60,7 +60,7 @@ const generateQuestions = (base: number): Question[] => {
 };
 
 export default function Race({ carImage, carCrashImage, level, bgImage, bgMusic, onFinish }: RaceProps) {
-  const { t } = useLanguage(); // <--- СЛОВНИК
+  const { t } = useLanguage();
 
   const [status, setStatus] = useState<'driving' | 'question' | 'crashed' | 'victory'>('driving');
   const [currentIndex, setCurrentIndex] = useState(0);

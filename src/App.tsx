@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './index.css';
 import Race from './screens/Race/race';
 import Explanation from './screens/Explanation/Explanation';
@@ -35,7 +35,7 @@ import musicLevel9 from "./assets/sounds/music-level-9.mp3";
 import { useLanguage } from './i18n/LanguageContext';
 
 const LEVEL_BACKGROUNDS: Record<number, string> = { 1: bglevel1, 2: bglevel2, 3: bglevel3, 4: bglevel4, 5: bglevel5, 6: bglevel6, 7: bglevel7, 8: bglevel8, 9: bglevel9 };
-const LEVEL_MUSIC: Record<number, string> = { 1: musicLevel1, 2: musicLevel2, 3: musicLevel1, 4: musicLevel2, 5: musicLevel3, 6: musicLevel4, 7: musicLevel5, 8: musicLevel6, 9: musicLevel7 };
+const LEVEL_MUSIC: Record<number, string> = { 1: musicLevel1, 2: musicLevel2, 3: musicLevel3, 4: musicLevel4, 5: musicLevel5, 6: musicLevel6, 7: musicLevel7, 8: musicLevel8, 9: musicLevel9 };
 
 type Screen = 'lobby' | 'garage' | 'race' | 'explanation';
 
@@ -83,7 +83,6 @@ export default function App() {
       {currentScreen === 'lobby' && (
         <div style={{ padding: 20, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           
-          {/* ПЕРЕМИКАЧ МОВ */}
           <div style={{ position: 'absolute', top: 20, left: 20, display: 'flex', gap: '10px' }}>
             <button onClick={() => setLang('uk')} style={{ opacity: lang === 'uk' ? 1 : 0.4, fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}>🇺🇦</button>
             <button onClick={() => setLang('en')} style={{ opacity: lang === 'en' ? 1 : 0.4, fontSize: '24px', background: 'none', border: 'none', cursor: 'pointer' }}>🇬🇧</button>

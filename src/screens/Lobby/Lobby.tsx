@@ -22,7 +22,6 @@ export default function Lobby({ coins, currentCarId, onPlay, onGarage }: LobbyPr
         МАТЕМАТИЧНА<br/>ГОНКА
       </h1>
 
-      {/* Анімація машинки в меню */}
       <div style={{ fontSize: '100px', animation: 'carBounce 1s infinite alternate', marginBottom: '40px' }}>
         {currentCar.emoji}
       </div>

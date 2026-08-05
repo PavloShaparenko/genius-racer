@@ -4,14 +4,14 @@
   margin: 0 auto;
   color: #fff;
   line-height: 1.6;
-  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; /* Робимо шрифт більш дитячим, якщо підтримується */
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
 }
 
 .explanation-title {
   margin-bottom: 16px;
   font-size: 32px;
   text-align: center;
-  color: #FFD700; /* Золотий колір для заголовка */
+  color: #FFD700;
 }
 
 .explanation-intro {
@@ -20,7 +20,6 @@
   text-align: center;
 } 
 
-/* Спільні стилі для карток */
 .card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -30,12 +29,12 @@
 }
 
 .card-magic {
-  background: rgba(156, 39, 176, 0.2); /* Фіолетовий магічний фон */
+  background: rgba(156, 39, 176, 0.2);
   border: 2px dashed #E040FB;
 }
 
 .card-example {
-  background: rgba(33, 150, 243, 0.15); /* Синій фон для машинок */
+  background: rgba(33, 150, 243, 0.15);
 }
 
 .card-title {
@@ -61,7 +60,6 @@
   letter-spacing: 4px;
 }
 
-/* Стилі кнопок */
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -94,7 +92,7 @@
 }
 
 .btn-play {
-  background: #FF9800; /* Яскрава ігрова кнопка */
+  background: #FF9800;
   box-shadow: 0 4px 0 #F57C00;
 }
 
