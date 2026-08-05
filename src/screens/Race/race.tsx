@@ -23,7 +23,7 @@ import crashSfx from "../../assets/sounds/crash.mp3";
 import sadSfx from "../../assets/sounds/sad.mp3";
 import victorySfx from "../../assets/sounds/victory.mp3";
 import clickSfx from "../../assets/sounds/click.mp3";
-import backMusicSfx from "../../assets/sounds/back-music.mp3";
+
 
 // Функция для проигрывания одиночных звуков (чтобы они могли накладываться друг на друга)
 const playSound = (src: string, volume = 1) => {
@@ -37,6 +37,7 @@ interface RaceProps {
   carCrashImage: string;
   level: number;
   bgImage: string;
+  bgMusic: string;
   onFinish: (coins: number, isVictory: boolean) => void;
 }
 
@@ -74,7 +75,7 @@ const generateQuestions = (base: number): Question[] => {
   return questions;
 };
 
-export default function Race({ carImage, carCrashImage, level, bgImage, onFinish }: RaceProps) {
+export default function Race({ carImage, carCrashImage, level, bgImage, bgMusic, onFinish }: RaceProps) {
   const [status, setStatus] = useState<'driving' | 'question' | 'crashed' | 'victory'>('driving');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [earnedCoins, setEarnedCoins] = useState(0);
@@ -90,7 +91,7 @@ export default function Race({ carImage, carCrashImage, level, bgImage, onFinish
   // ЛОГИКА ЗВУКА МОТОРА И ФОНА
   // ==========================================
   const engineAudioRef = useRef(new Audio(engineSfx));
-  const backgroundMusicRef = useRef(new Audio(backMusicSfx));
+  const backgroundMusicRef = useRef(new Audio(bgMusic));
 
   useEffect(() => {
     const engine = engineAudioRef.current;

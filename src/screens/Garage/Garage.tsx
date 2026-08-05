@@ -36,7 +36,7 @@ export default function Garage({
         onBuyCar(car.id, car.price);
       } else {
         // Звук ошибки или просто алерт
-        alert(`Не хватает монет! Нужно еще ${car.price - coins} 💰`);
+        alert(`Не вистачає, треба ще : ${car.price - coins} 💰`);
       }
     }
   };

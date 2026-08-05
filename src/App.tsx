@@ -25,6 +25,18 @@ import bglevel7 from "./assets/bg-level-7.png";
 import bglevel8 from "./assets/bg-level-8.png";
 import bglevel9 from "./assets/bg-level-9.png";
 
+import musicLevel1 from "./assets/sounds/music-level-1.mp3";
+import musicLevel2 from "./assets/sounds/music-level-2.mp3";
+import musicLevel3 from "./assets/sounds/music-level-3.mp3";
+import musicLevel4 from "./assets/sounds/music-level-4.mp3";
+import musicLevel5 from "./assets/sounds/music-level-5.mp3";
+import musicLevel6 from "./assets/sounds/music-level-6.mp3";
+import musicLevel7 from "./assets/sounds/music-level-7.mp3";
+import musicLevel8 from "./assets/sounds/music-level-8.mp3";
+import musicLevel9 from "./assets/sounds/music-level-9.mp3";
+
+import { useLanguage } from './i18n/LanguageContext';
+
 const LEVEL_BACKGROUNDS: Record<number, string> = {
   1: bglevel1,
   2: bglevel2,
@@ -37,16 +49,31 @@ const LEVEL_BACKGROUNDS: Record<number, string> = {
   9: bglevel9,
 };
 
+const LEVEL_MUSIC: Record<number, string> = {
+  1: musicLevel1,
+  2: musicLevel2,
+  3: musicLevel1,
+  4: musicLevel2,
+  5: musicLevel3,
+  6: musicLevel4,
+  7: musicLevel5,
+  8: musicLevel6,
+  9: musicLevel7,
+};
 
-// Обновляем базу данных
 const CARS_DB: CarDef[] = [
   { id: 'basic', name: 'Базова', price: 0, image: carBasicImg, crashImage: carBasicCrash },
   { id: 'sport', name: 'Спортивна', price: 150, image: carSportImg, crashImage: carSportCrash },
   { id: 'tank', name: 'Танк', price: 500, image: carTankImg, crashImage: carTankCrash },
 ];
+
 type Screen = 'lobby' | 'garage' | 'race' | 'explanation';
 
 export default function App() {
+  
+  const { t, lang, setLang } = useLanguage();
+
+
   const [currentScreen, setCurrentScreen] = useState<Screen>('lobby');
   
   // Вибір рівня
@@ -207,6 +234,7 @@ export default function App() {
           carCrashImage={currentCar.crashImage} // Передаємо вибраний рівень у гонку!
           carImage={currentCarImage} // Передаємо картинку вибраної машини
            bgImage={LEVEL_BACKGROUNDS[selectedLevel] || 'bgLevel1'}
+           bgMusic={LEVEL_MUSIC[selectedLevel] || 'musicLevel1'}
           onFinish={(earnedCoins, isVictory) => {
             setCoins((c) => c + earnedCoins);
             
