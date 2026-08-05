@@ -17,7 +17,7 @@ import sadSfx from "../../assets/sounds/sad.mp3";
 import victorySfx from "../../assets/sounds/victory.mp3";
 import clickSfx from "../../assets/sounds/click.mp3";
 
-const playSound = (src: string, volume = 1) => {
+const playSound = (src: string, volume = 0.7) => {
   const audio = new Audio(src);
   audio.volume = volume;
   audio.play().catch(() => {});
@@ -108,7 +108,7 @@ export default function Race({ carImage, carCrashImage, level, bgImage, bgMusic,
 
   useEffect(() => {
     if (status === 'question') {
-      playSound(warningSfx, 0.25);
+      playSound(warningSfx, 0.35);
       setCarPosition({ left: 14, bottom: 18 }); setShowObstacle(true); setObstacleLeft(56);
       requestAnimationFrame(() => setObstacleLeft(54));
     }
