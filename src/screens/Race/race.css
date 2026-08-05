@@ -21,7 +21,7 @@
   display: flex; /* Выстраивает две картинки в один длинный ряд */
   z-index: 0;
   /* Скорость прокрутки фона. Чем меньше секунд, тем быстрее едем */
-  animation: scrollBg 35s linear infinite; 
+  animation: scrollBg 30s linear infinite; 
 }
 
 .bg-img {
