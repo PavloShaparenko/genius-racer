@@ -4,7 +4,6 @@ import './race.css';
 // Импортируем картинки машины и фона
 import carDrive from "../../assets/car-drive.gif";
 
-import bgImage from "../../assets/back-1.png"; 
 
 // Импортируем картинки препятствий
 import holeImg from "../../assets/hole.png";
@@ -37,7 +36,8 @@ interface RaceProps {
   carImage: string;
   carCrashImage: string;
   level: number;
-  onFinish: (coins: number) => void;
+  bgImage: string;
+  onFinish: (coins: number, isVictory: boolean) => void;
 }
 
 interface Question {
@@ -74,7 +74,7 @@ const generateQuestions = (base: number): Question[] => {
   return questions;
 };
 
-export default function Race({ carImage, carCrashImage, level, onFinish }: RaceProps) {
+export default function Race({ carImage, carCrashImage, level, bgImage, onFinish }: RaceProps) {
   const [status, setStatus] = useState<'driving' | 'question' | 'crashed' | 'victory'>('driving');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [earnedCoins, setEarnedCoins] = useState(0);
@@ -121,7 +121,7 @@ export default function Race({ carImage, carCrashImage, level, onFinish }: RaceP
   // ==========================================
   useEffect(() => {
     if (status === 'driving') {
-      const driveTime = Math.random() * 400 + 1100;
+      const driveTime = Math.random() * 700 + 1600;
       const timer = setTimeout(() => {
         setStatus('question');
       }, driveTime);
@@ -175,7 +175,7 @@ export default function Race({ carImage, carCrashImage, level, onFinish }: RaceP
       if (currentIndex + 1 >= questions.length) {
         setStatus('victory');
         playSound(victorySfx); // Звук: Победа 🎉
-        setTimeout(() => onFinish(earnedCoins + Math.random() * 20 + 50), 3000);
+        setTimeout(() => onFinish(earnedCoins + Math.random() * 20 + 50, true), 3000);
       } else {
         setCurrentIndex(i => i + 1);
         setStatus('driving');
@@ -186,7 +186,7 @@ export default function Race({ carImage, carCrashImage, level, onFinish }: RaceP
       playSound(crashSfx); // Звук: Авария 💥
       setTimeout(() => playSound(sadSfx), 800); // Звук: Грустная мелодия (начинается после звука удара)
       
-      setTimeout(() => onFinish(earnedCoins), 2500); 
+      setTimeout(() => onFinish(earnedCoins, false), 2500); 
     }
   };
 
